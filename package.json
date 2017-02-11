@@ -18,9 +18,12 @@
     "shortid": "^2.2.6",
     "stylus": "0.54.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node node_modules/nodemon/bin/nodemon.js"
   },
   "author": "",
   "license": "ISC"
