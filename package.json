@@ -22,8 +22,7 @@
     "nodemon": "^1.11.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node node_modules/nodemon/bin/nodemon.js"
+    "test" : "node node_modules/nodemon/bin/nodemon.js"
   },
   "author": "",
   "license": "ISC"
