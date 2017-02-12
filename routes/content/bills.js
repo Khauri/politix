@@ -7,29 +7,21 @@ var openstates = require('../../openstates/openstates');
 
 Router.route('/')
     .get(function(req, res, next){
-        var url = "/legislators";
+        var url = "/bills/";
         openstates.open(url, function( data ){
             res.json( data );
         });
     });
 
-Router.route('/near')
+Router.route('/:bill_id')
     .get(function(req, res, next){
-        var lat = req.query.lat,
-            long = req.query.long,
-            url = '/legislators/geo/?lat='+lat+"&long="+long;
-            openstates.open(url, function( data ){
-                res.json( data );
-            });
-    })
-
-Router.route('/:leg_id')
-    .get(function(req, res, next){
-       url = '/legislators/' + req.params.leg_id;
+       url = '/bills/' + req.params.bill_id;
        openstates.open(url, function( data ){
            res.json( data );
        });
     })
+
+
 
 
 

@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var api = require('./routes/api');
 var users = require('./routes/users/users');
 var legislators = require('./routes/content/legislators');
+var bills = require('./routes/content/bills');
 
 var app = express()
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', api);
 app.use('/api/users', users);
 app.use('/api/legislators', legislators);
+app.use('/api/bills', bills);
 
 app.listen(3000, function () {
   console.log('listening on port 3000!')
