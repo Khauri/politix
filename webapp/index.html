@@ -7,23 +7,29 @@
   </head>
   <body ng-app = "politix">
     <div class='modal'>
-        <div class='login-modal' >
+        <div class='login-modal'>
             <div class="slide slide1"style="color:#454545;">
-                <h1 style="font-size:2.5em;"> Hello, </h1>
+                <p style="font-weight:bold;padding-bottom:6px;font-size:1.3em;"> Welcome to </p>
                 <img src="icons/ptx4.png" class='icon'>
-                <h2 > Welcome to <span style="color:purple; font-size:1.2em;"> Politix </span> </h2>
                 <div class=""><button class="next-button">Next</button></div>
             </div>
             <div class="slide slide2 hidden">
                 <div class="logo"></div>
-                <h4> Politix makes it fun to stay up to date with what's happening around you </h4>
+                <h4> Politix makes it fun and easy to stay up to date with what's happening around you. 
+                     </h4>
                 <div class=""><button class="next-button">Next</button></div>
             </div>
             <div class="slide slide3 hidden">
                 <div class="logo"></div>
-                <h4> And it all starts with YOU. </h4><h4>Who are you? </h4>
-                <div> My name is <input placeholder="John Smith"></div>
-                <div> And I'm intererested in... </div>
+                <h2> And it all starts with YOU. </h2><h4>Who are you? </h4>
+                <div> My name is</div>
+                <input id="name" placeholder="John Smith" style="text-align:center;font-size:1.3em;">
+                <div> And I'm intererested in...</div>
+                <hr>
+                <input type="checkbox"> Agriculture <input type="checkbox"> Business
+                <input type="checkbox"> College <input type="checkbox"> Environment
+                <input type="checkbox"> Education <input type="checkbox"> Marriage
+                <input type="checkbox"> Agriculture <input type="checkbox"> Business
                 <div class=""><button class="next-button">Let's Begin</button></div>
             </div>
         </div>
@@ -39,29 +45,68 @@
             <div class='window-control close'>✕</div>
         </div>
     </div>
-    <div class='root'>
-        <div class="menu open" ng-controller='userController'>
+    <div class='root' ng-controller='contentController'>
+        <div class="menu open">
             <div class="menu-inner">
                 <div class="profile-pic">
+                    <div class='pic-container' style="background-image:url('{{curr_user.pic_url}}'); background-size:cover;"></div>
                 </div>
-                <div class="name"> Name: {{ name }} </div>
-                <div class="level"> Tix: {{ level }}</div>
-                <div class="level"> Rank: {{ Rank }}</div>
+                <div class="information">
+                    <div class="name"> {{ curr_user.first_name }} </div>
+                    <div class="level"> Level {{ curr_user.level || 0 }}</div>
+                    <button class="rank"> <div class="text">{{ Rank || "Ignorant" }}</div>
+                        <div class="rank_description"> This user is completely Unkowledgable and should NOT be trusted for political opionions.</div>
+                    </button>
+                </div>
             </div>
             <div class="settings">Settings</div>
             <input class="search-bar" placeholder="Search for bills, legislators, etc...">
         </div>
-        <div class="content" ng-controller='contentController'>
+        <div class="content" >
+            <div class='comment-modal' hidden>
+                
+            </div>
+            <!--
             <div class="tabs">
-                <div class="navigation-item"><button focus>Home</button></div>
+                <div class="navigation-item"><button>Home</button></div>
                 <div class="navigation-item"><button>Local</button></div>
-                <div class="navigation-item"><button>National</button></div>
+                <div class="navigation-item">
+                    <button>National</button>
+                </div>
                 <div class="navigation-item"><button>Me</button></div>
+            </div>
+            -->
+            <div class='tab-content'>
+                <div class="banner" style="height: 250px; overflow:hidden; background-image:url('https://i.ytimg.com/vi/QTZQ9bta31w/maxresdefault.jpg'); background-position:center;background-size:cover;"> 
+                    <h1 style="color:white;"> Washington, DC </h1>
+                </div>
+                <div ng-repeat="bill in list_bills" class="bill-display">
+                    <a href="#" class='info' ng-click="getBillData(bill.id)">
+                        <div class='bill-title'>{{bill.title}}</div>
+                    </a>
+                    <div class='buttons'>
+                        <button class='dissent'>Dissenting: <span>{{ bill.dissents || 0 }}</span></button>
+                        <button class='concur'>Concurring: <span>{{ bill.concurs || 0 }}</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="sidebar-inner">
+                <div class='title'>{{selectedBill.title}}</div>
+                <div class='state'>{{selectedBill.state}}</div>
+                <div class='chamber'>{{selectedBill.chamber}}</div>
+                <div class='level'>{{selectedBill.level}}</div>
+                <div class='sources' ng-repeat="sources in selectedBill.sources">
+                    <a href="#"> {{sources.url}} </a>
+                </div>
+            </div>
+            <div class="comment">
+                <textarea style="height:100%;"></textarea>
             </div>
         </div>
     </div>
     <script>
-        
         // hamburger menu
         var menu = document.querySelector('.menu');
         curr_slide = 1;
@@ -82,6 +127,8 @@
                 if (next){
                     next.classList.remove("hidden");
                 }else{
+                    var name = document.querySelector('#name').value;
+                    console.log(name);
                     removeModal();
                 }
             })
@@ -91,13 +138,39 @@
             document.querySelector('.title-bar').classList.remove("light");
         }
     </script>
+
     <script>
         angular.module("politix",[])
-        .controller("userController",function($scope){
-            $scope.name = "khauri";
-        })
-        .controller("contentController", function($scope){
+        .controller("contentController", function($scope, $http){
+            var latitude = 38.90;
+            var longitude = 77.03;
+            $scope.getBillData = function(id){
+                $http({
+                    method:'GET',
+                    url: 'http://localhost:3000/api/bills/'+id
+                }).then(function(res){
+                    $scope.selectedBill = res.data;
+                })
+            };
+            $scope.getUsers = function(id){
 
+            };
+            $http({
+                method:'GET',
+                url : 'http://localhost:3000/api/bills'
+                //url:'http://localhost:3000/api/legislators?lat='+latitude+"&long="+longitude
+            }).then(function(res){
+                $scope.list_bills = res.data;
+            })
+            $scope.name = "";
+            
+            $http({
+                method:'GET',
+                url:'http://localhost:3000/api/users/SkSzVxTOg'
+            }).then(function(res){
+                console.log(res.data);
+                $scope.curr_user = res.data;
+            })
         });
     </script>
   </body>

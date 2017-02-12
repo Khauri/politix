@@ -121,11 +121,37 @@ body{
     flex: 1;
     display : flex;
     flex-direction : row;
+    line-height : 2em;
+}
+.root a{
+    color : inherit !important;
+    text-decoration-style: none !important;
+    text-decoration-line : none !important;
 }
 .content{
+    display : flex;
+    flex-direction : column;
+    background-color: #fffaff;
     flex : 1;
 }
-.tabs{
+.bill-display{
+    background-color:white;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+}
+.bill-display:hover{
+    background-color : rgba(230, 230, 255, 1);
+}
+.tab-content{
+    overflow-y:auto;
+    padding : 5px 10px;
+}
+.tab-content .info{
+    display : flex;
+    padding: 10px 20px;
+    margin : 2px 0;
+}
+.tabs{  
+    flex: 1 0 initial;  
     display : flex;
     flex-direction : row;
     align-content:flex-start;
@@ -164,7 +190,10 @@ body{
     transition: opacity .4s ease-in;
 }
 .login-modal .next-button{
-    float : right;
+    font-size : 1.5em;
+    position : absolute;
+    bottom : 10px;
+    right : 10px;
     display : block;
     padding : 10px 15px;
     border-radius : 5px;
@@ -176,8 +205,7 @@ body{
 
 .login-modal .icon{
     position : relative;
-    width : 45%;
-    transform: rotate(-7deg);
+    width : 75%;
 }
 .login-modal .slide{
     transition: opacity .5s ease-in-out; 
@@ -189,4 +217,95 @@ body{
 
 .navigation-item button:focus{
     background-color : white;
+}
+
+.slide3 > *{
+    margin-top : 20px;
+}
+
+.profile-pic{
+    display : flex;
+    flex-direction : row;
+    justify-content: center;
+}
+.pic-container{
+    background-color : #000;
+    width : 175px;
+    height : 175px;
+}
+
+.sidebar{
+    flex: 0 1 300px;
+    padding : 10px;
+    background-color : white;
+}
+.buttons{
+    display : flex;
+    flex-direction : row;
+    justify-content: flex-end;
+}
+.banner{
+    font-size : 1.6em;
+    text-align: left;
+    display : flex;
+    padding : 20px;
+}
+.banner h1{
+    margin : 0px;
+    display : flex;
+    align-self: flex-end;
+    -webkit-text-stroke: 4px solid #333;
+}
+.bill-display a{
+    text-decoration : none;
+}
+.buttons button{
+    padding : 20px;
+}
+.dissent{
+    color : darkgoldenrod;
+}
+.concur{
+    color : green;
+}
+.information{
+    padding : 10px;
+}
+.information .name{
+    text-transform : capitalize;
+}
+.sidebar{
+    display : flex;
+    flex-direction : column;
+    justify-content : space-between;
+}
+.sidebar-inner{
+    max-width : 200px;
+}
+.sidebar-inner > *{
+    display : flex;
+    flex-direction : row;
+    justify-content: center;
+    flex : 1;
+}
+.rank{
+    padding : 0px;
+    color : inherit;
+    font-size : inherit;
+}
+.rank:hover{
+    background-color:initial;
+}
+.rank .text::after{
+    padding : 0px;
+    content: "▾";
+}
+.rank:focus .text::after{
+    content : "▸";
+}
+.rank_description{
+    display : none;
+}
+.rank:focus .rank_description{
+    display : block;
 }

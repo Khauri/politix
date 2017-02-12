@@ -49,7 +49,16 @@ Router.route('/:user_id')
             });
     })
     .put(function(req, res, next){
-
+        User.findOne({_id:req.params.user_id})
+            .exec(function(err, user){
+                var l = ["first_name", "last_name", "nickname", "pic_url", "email", "phone", "level", "description"]
+                for (var i = 0; i < l.length; i++){
+                    user[l[i]] = req.body[l[i]] || user[l[i]];
+                }
+                user.save(function(err, user){
+                    res.json(err || user)
+                });
+            });
     })
     .delete(function(req, res, next){
         User.findOne({
