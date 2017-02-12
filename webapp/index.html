@@ -15,9 +15,9 @@
             </div>
             <div class="slide slide2 hidden">
                 <div class="logo"></div>
-                <h4> Politix makes it fun and easy to stay up to date with what's happening around you. 
+                <h4> Politix makes it fun and easy to stay up to date with what's happening around you. There's no time commitment and finding out about the legislation that will affect you personally has never been easier or more rewarding. 
                      </h4>
-                <div class=""><button class="next-button">Next</button></div>
+                <div class=""><button class="next-button">Sign Me Up</button></div>
             </div>
             <div class="slide slide3 hidden">
                 <div class="logo"></div>
@@ -53,29 +53,36 @@
                 </div>
                 <div class="information">
                     <div class="name"> {{ curr_user.first_name }} </div>
-                    <div class="level"> Level {{ curr_user.level || 0 }}</div>
-                    <button class="rank"> <div class="text">{{ Rank || "Ignorant" }}</div>
+                    <hr>
+                    <div class="level"> {{ curr_user.level || 0 }} Tickets</div>
+                    <button class="rank"> <div class="text">{{ Rank || "Weak" }}</div>
                         <div class="rank_description"> This user is completely Unkowledgable and should NOT be trusted for political opionions.</div>
                     </button>
                 </div>
+                <div class="myshit">
+                    <div href="#"> Trending </div>
+                    <div href="#"> Local </div>
+                    <div href="#"> Tracking </div>
+                    <div href="#"> My Reps </div>
+                </div>
             </div>
-            <div class="settings">Settings</div>
             <input class="search-bar" placeholder="Search for bills, legislators, etc...">
         </div>
         <div class="content" >
-            <div class='comment-modal' hidden>
-                
-            </div>
-            <!--
-            <div class="tabs">
-                <div class="navigation-item"><button>Home</button></div>
-                <div class="navigation-item"><button>Local</button></div>
-                <div class="navigation-item">
-                    <button>National</button>
+            <div class='comment-modal' ng-class="commentsOpen ? 'open' : '' ">
+                <div class="modal-inner">
+                    <div class='inner-comments'>
+                        <div ng-repeat="comment in currComments">
+                            <div class='text'>{{comment.comment}}</div>
+                        </div>
+                    </div> 
+                    <div class="controls">
+                        <input placeholder="Write A Comment">
+                        <button ng-click="toggleModal()"> Close </button>
+                        <button>Post</button>
+                    </div>
                 </div>
-                <div class="navigation-item"><button>Me</button></div>
             </div>
-            -->
             <div class='tab-content'>
                 <div class="banner" style="height: 250px; overflow:hidden; background-image:url('https://i.ytimg.com/vi/QTZQ9bta31w/maxresdefault.jpg'); background-position:center;background-size:cover;"> 
                     <h1 style="color:white;"> Washington, DC </h1>
@@ -85,8 +92,8 @@
                         <div class='bill-title'>{{bill.title}}</div>
                     </a>
                     <div class='buttons'>
-                        <button class='dissent'>Dissenting: <span>{{ bill.dissents || 0 }}</span></button>
-                        <button class='concur'>Concurring: <span>{{ bill.concurs || 0 }}</span></button>
+                        <button class='dissent' ng-click="getComments(bill.id, 'concurring')">Dissenting: <span>{{ bill.dissents || 0 }}</span></button>
+                        <button class='concur' ng-click="getComments(bill.id, 'dissenting')">Concurring: <span>{{ bill.concurs || 0 }}</span></button>
                     </div>
                 </div>
             </div>
@@ -100,9 +107,6 @@
                 <div class='sources' ng-repeat="sources in selectedBill.sources">
                     <a href="#"> {{sources.url}} </a>
                 </div>
-            </div>
-            <div class="comment">
-                <textarea style="height:100%;"></textarea>
             </div>
         </div>
     </div>
@@ -128,7 +132,6 @@
                     next.classList.remove("hidden");
                 }else{
                     var name = document.querySelector('#name').value;
-                    console.log(name);
                     removeModal();
                 }
             })
@@ -142,6 +145,7 @@
     <script>
         angular.module("politix",[])
         .controller("contentController", function($scope, $http){
+            $scope.commentsOpen = false;
             var latitude = 38.90;
             var longitude = 77.03;
             $scope.getBillData = function(id){
@@ -152,6 +156,21 @@
                     $scope.selectedBill = res.data;
                 })
             };
+
+            $scope.getComments = function(id){
+                 $http({
+                    method:'GET',
+                    url: 'http://localhost:3000/api/bills/'+id+"/comments"
+                }).then(function(res){
+                    $scope.currComments = res.data;
+                    $scope.toggleModal();
+                })
+            }
+
+            $scope.toggleModal = function(){
+                $scope.commentsOpen = !$scope.commentsOpen;
+            }
+
             $scope.getUsers = function(id){
 
             };

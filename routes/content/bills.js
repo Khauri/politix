@@ -4,6 +4,7 @@ var express = require('express');
 var Router = express.Router();
 
 var openstates = require('../../openstates/openstates');
+var Comments = require('../../mongo/models/Comments');
 
 Router.route('/')
     .get(function(req, res, next){
@@ -19,6 +20,15 @@ Router.route('/:bill_id')
        openstates.open(url, function( data ){
            res.json( data );
        });
+    })
+
+Router.route('/:bill_id/comments')
+    .get(function(req,res,next){
+        Comments.find({parent:req.params.bill_id})
+            .limit(30)
+            .exec(function(err, comments){
+                res.json(err || comments)
+            })
     })
 
 
