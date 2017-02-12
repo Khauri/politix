@@ -1,0 +1,15 @@
+{
+  "name": "politix",
+  "version": "1.0.0",
+  "description": "web app for politix",
+  "main": "main.js",
+  "scripts": {
+    "test": ".\\node_modules\\.bin\\electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.4.15",
+    "nodemon": "^1.11.0"
+  }
+}

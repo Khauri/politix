@@ -21,6 +21,6 @@ Router.route('/near')
             openstates.open(url, function( data ){
                 res.json( data );
             });
-    })
+    });
 
 module.exports = Router;

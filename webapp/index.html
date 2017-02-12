@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js'></script>
+  </head>
+  <body ng-app = "politix">
+    <div class='modal'>
+        <div class='login-modal' >
+            <div class="slide slide1"style="color:#454545;">
+                <h1 style="font-size:2.5em;"> Hello, </h1>
+                <img src="icons/ptx4.png" class='icon'>
+                <h2 > Welcome to <span style="color:purple; font-size:1.2em;"> Politix </span> </h2>
+                <div class=""><button class="next-button">Next</button></div>
+            </div>
+            <div class="slide slide2 hidden">
+                <div class="logo"></div>
+                <h4> Politix makes it fun to stay up to date with what's happening around you </h4>
+                <div class=""><button class="next-button">Next</button></div>
+            </div>
+            <div class="slide slide3 hidden">
+                <div class="logo"></div>
+                <h4> And it all starts with YOU. </h4><h4>Who are you? </h4>
+                <div> My name is <input placeholder="John Smith"></div>
+                <div> And I'm intererested in... </div>
+                <div class=""><button class="next-button">Let's Begin</button></div>
+            </div>
+        </div>
+    </div><!-- sign up, etc -->
+    <div class='title-bar light'>
+        <div class='infobar'>
+            <div class='hamburger' onclick="toggleMenu()"><button>≡</button></div>
+            <div class='window-title'></div>
+        </div>
+        <div class='window-controls'>
+            <div class='window-control minim'>—</div>
+            <div class='window-control expcol'>☐</div>
+            <div class='window-control close'>✕</div>
+        </div>
+    </div>
+    <div class='root'>
+        <div class="menu open" ng-controller='userController'>
+            <div class="menu-inner">
+                <div class="profile-pic">
+                </div>
+                <div class="name"> Name: {{ name }} </div>
+                <div class="level"> Tix: {{ level }}</div>
+                <div class="level"> Rank: {{ Rank }}</div>
+            </div>
+            <div class="settings">Settings</div>
+            <input class="search-bar" placeholder="Search for bills, legislators, etc...">
+        </div>
+        <div class="content" ng-controller='contentController'>
+            <div class="tabs">
+                <div class="navigation-item"><button focus>Home</button></div>
+                <div class="navigation-item"><button>Local</button></div>
+                <div class="navigation-item"><button>National</button></div>
+                <div class="navigation-item"><button>Me</button></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        // hamburger menu
+        var menu = document.querySelector('.menu');
+        curr_slide = 1;
+        function toggleMenu(){
+            if(menu.classList.contains("open")){
+                menu.classList.remove("open");
+            }else{
+                menu.classList.add("open");
+            }
+        }
+        // control login slides
+        slides = document.querySelectorAll(".next-button");
+        for(var i = 0; i < slides.length; i++){
+            slides[i].addEventListener('click',function(e){
+                document.querySelector(".slide"+curr_slide).classList.add("hidden");
+                curr_slide++;
+                var next = document.querySelector(".slide"+curr_slide);
+                if (next){
+                    next.classList.remove("hidden");
+                }else{
+                    removeModal();
+                }
+            })
+        }
+        function removeModal(){
+            document.querySelector('.modal').style.display = "none";
+            document.querySelector('.title-bar').classList.remove("light");
+        }
+    </script>
+    <script>
+        angular.module("politix",[])
+        .controller("userController",function($scope){
+            $scope.name = "khauri";
+        })
+        .controller("contentController", function($scope){
+
+        });
+    </script>
+  </body>
+</html>
